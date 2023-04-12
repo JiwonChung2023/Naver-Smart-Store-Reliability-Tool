@@ -9,6 +9,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 import time
+from lib import myFunctionSetting as mfs
 
 # 웹드라이버를 가져오기
 cdriver='./driver/chromedriver.exe'
