@@ -1,3 +1,6 @@
+###############################
+##2023년 4월 13일 기준 최종 버전#
+###############################
 # 라이브러리를 가져오기
 import sqlite3
 import numpy as np
@@ -9,7 +12,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 import time
-from lib import myFunctionSetting as mfs
+import re
 
 # 웹드라이버를 가져오기
 cdriver='./driver/chromedriver.exe'
@@ -97,7 +100,7 @@ time.sleep(1)
 li2=[]
 jwlist2=[]
 
-for j in range(1,6):
+for j in range(1,2):
     try:
         m=2
         rstar=[]
@@ -125,39 +128,36 @@ for j in range(1,6):
         revs = driver.find_elements(by=By.CSS_SELECTOR,value=sel)
         listSel='#REVIEW > div > div._180GG7_7yx > div.cv6id6JEkg > div > div > a:nth-child({})'
         realjwlist=[]
-        # 다섯 페이지까지만 긁기
+        #지우기
+        m=2
         while(m!=7):
             try:
                 driver.find_element(by=By.CSS_SELECTOR,value=listSel.format(m)).click()
                 time.sleep(2)
                 ####
+                comms = driver.find_elements(by=By.CSS_SELECTOR,value='._3QDEeS6NLn')
+                ops = driver.find_elements(by=By.CSS_SELECTOR,value='._14FigHP3K8')
+                stas = driver.find_elements(by=By.CSS_SELECTOR,value='._15NU42F3kT')
+                #dats = driver.find_elements(by=By.CSS_SELECTOR,value='._3QDEeS6NLn')
+                stuffs=[]
+                for c in comms:
+                    stuffs=c.text.split('\n')
+                    for s in stuffs:
+                        if '*' in s:
+                            pass
+                        else:
+                            isok=re.match('[ㄱ-힣 ]',s)
+                            if (isok!=None): 
+                                rcomm.append(s)
+                            else:
+                                rdate.append(s)
+                for o in ops:
+                    roption.append(o.text)
+                for s in stas:
+                    rstar.append(s.text)               
+                jwlist=list(zip(rdate,rstar,roption,rcomm))
+                realjwlist+=jwlist
                 print('.',end='')
-                ####
-                #for l in listSel
-                # 한 페이지 당 20 개의 리뷰가 존재하는데 그거 긁기
-                for r in revs:
-                    rlist=r.text.split('\n')
-                    #print(rlist)
-                    rstar.append(rlist[1])
-                    rdate.append(rlist[3])
-                    rest=rlist[5:]
-                    if ('더보기' in rest):
-                        rest.remove('더보기')
-                    if ('이미지 펼쳐보기' in rest):
-                        rest.remove('이미지 펼쳐보기')
-                    if (':' in rest[0]):
-                        roption.append(rest[0])
-                        rest=rest[1:]
-                    if (len(rest)==1):
-                        rcomm.append(rest[-1])
-                    else:
-                        wordBox=''
-                        for n in rest:
-                            wordBox+=n
-                            wordBox+=' '
-                        rcomm.append(wordBox)
-                    jwlist=list(zip(rdate,rstar,roption,rcomm))
-                    realjwlist+=jwlist
                 m+=1
             except:
                 m+=1
@@ -168,4 +168,3 @@ for j in range(1,6):
         time.sleep(2)
     except:
         break
-# %%

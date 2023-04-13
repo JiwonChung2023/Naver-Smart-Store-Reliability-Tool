@@ -9,7 +9,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 import time
-from lib import myFunctionSetting as mfs
+import re
 
 # 웹드라이버를 가져오기
 cdriver='./driver/chromedriver.exe'
@@ -85,7 +85,7 @@ for i in range(65,66):
         li1.append([stName,busNumber,busAddress,male,female,att,busok])
 
     df1=pd.DataFrame(li1,columns=['상호명','사업자등록번호','사업장 소재지','남성비율','여성비율','관심고객수','정상영업여부'])
-    df1.to_csv(f'./csvs/{stName}StoreInfo.csv',encoding='utf-8-sig')
+    df1.to_csv(f'./csvs/myStoreInfo.csv',encoding='utf-8-sig')
 
 satis='/category/ALL?cp=1'
 driver.get(sellerURL+satis)
@@ -97,7 +97,7 @@ time.sleep(1)
 li2=[]
 jwlist2=[]
 
-for j in range(1,6):
+for j in range(1,2):
     try:
         m=2
         rstar=[]
@@ -125,44 +125,74 @@ for j in range(1,6):
         revs = driver.find_elements(by=By.CSS_SELECTOR,value=sel)
         listSel='#REVIEW > div > div._180GG7_7yx > div.cv6id6JEkg > div > div > a:nth-child({})'
         realjwlist=[]
+        #지우기
+        m=2
         while(m!=7):
             try:
                 driver.find_element(by=By.CSS_SELECTOR,value=listSel.format(m)).click()
                 time.sleep(2)
                 ####
+                comms = driver.find_elements(by=By.CSS_SELECTOR,value='._3QDEeS6NLn')
+                ops = driver.find_elements(by=By.CSS_SELECTOR,value='._14FigHP3K8')
+                stas = driver.find_elements(by=By.CSS_SELECTOR,value='._15NU42F3kT')
+                #dats = driver.find_elements(by=By.CSS_SELECTOR,value='._3QDEeS6NLn')
+                stuffs=[]
+                for c in comms:
+                    stuffs=c.text.split('\n')
+                    for s in stuffs:
+                        if '*' in s:
+                            pass
+                        else:
+                            isok=re.match('[ㄱ-힣 ]',s)
+                            if (isok!=None): 
+                                rcomm.append(s)
+                            else:
+                                rdate.append(s)
+                for o in ops:
+                    roption.append(o.text)
+                for s in stas:
+                    rstar.append(s.text)               
+                jwlist=list(zip(rdate,rstar,roption,rcomm))
+                realjwlist+=jwlist
                 print('.',end='')
+                
+                
+                
+                
                 ####
                 #for l in listSel
+                ####
 
-                for r in revs:
-                    rlist=r.text.split('\n')
-                    #print(rlist)
-                    rstar.append(rlist[1])
-                    rdate.append(rlist[3])
-                    rest=rlist[5:]
-                    if ('더보기' in rest):
-                        rest.remove('더보기')
-                    if ('이미지 펼쳐보기' in rest):
-                        rest.remove('이미지 펼쳐보기')
-                    if (':' in rest[0]):
-                        roption.append(rest[0])
-                        rest=rest[1:]
-                    if (len(rest)==1):
-                        rcomm.append(rest[-1])
-                    else:
-                        wordBox=''
-                        for n in rest:
-                            wordBox+=n
-                            wordBox+=' '
-                        rcomm.append(wordBox)
-                    jwlist=list(zip(rdate,rstar,roption,rcomm))
-                    realjwlist+=jwlist
+                # for r in revs:
+                #     rlist=r.text.split('\n')
+                #     #print(rlist)
+                #     rstar.append(rlist[1])
+                #     rdate.append(rlist[3])
+                #     rest=rlist[5:]
+                #     if ('더보기' in rest):
+                #         rest.remove('더보기')
+                #     if ('이미지 펼쳐보기' in rest):
+                #         rest.remove('이미지 펼쳐보기')
+                #     if (':' in rest[0]):
+                #         roption.append(rest[0])
+                #         rest=rest[1:]
+                #     if (len(rest)==1):
+                #         rcomm.append(rest[-1])
+                #     else:
+                #         wordBox=''
+                #         for n in rest:
+                #             wordBox+=n
+                #             wordBox+=' '
+                #         rcomm.append(wordBox)
+                #     jwlist=list(zip(rdate,rstar,roption,rcomm))
+                #     realjwlist+=jwlist
+                    #print(jwlist)
                 m+=1
             except:
                 m+=1
 
         df3=pd.DataFrame(realjwlist,columns=['기입날짜','별점','옵션', '후기'])
-        df3.to_csv(f'./csvs/{stName}{proName}comdata.csv',encoding='utf-8-sig')
+        df3.to_csv(f'./csvs/myItem{j}.csv',encoding='utf-8-sig')
         driver.back()
         time.sleep(2)
     except:
