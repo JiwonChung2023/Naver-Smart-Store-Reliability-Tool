@@ -1,7 +1,7 @@
+  ###############################
+ # 2023.04.13. final version  ##
 ###############################
-##2023년 4월 13일 기준 최종 버전#
-###############################
-# 라이브러리를 가져오기
+# get librarys
 import sqlite3
 import numpy as np
 import pandas as pd
@@ -14,15 +14,17 @@ from selenium.webdriver.common.keys import Keys
 import time
 import re
 
-# 웹드라이버를 가져오기
+# get webdriver
 cdriver='./driver/chromedriver.exe'
 driver=webdriver.Chrome(cdriver)
 driver.set_window_position(0,50)
 driver.set_window_size(800, 1300)
 
-# 디비를 정의하기
+# define database
 dfile='./db/suspiciousStores0410.db'
-# 함수를 정의하기
+
+# define functions
+# with it, you can fetch some infos and also send them easily
 def sqlPrs(sql='',d=[],opt=1):
     with sqlite3.connect(dfile) as conn:
         cur=conn.cursor()
@@ -35,33 +37,34 @@ def sqlPrs(sql='',d=[],opt=1):
             res=0
         conn.commit()
     return(res)
+# you can click buttons
 def clickIt(ssel,drv=driver):
     drv.find_element(by=By.CSS_SELECTOR,value=ssel).click()
-def goScroll():
-    dheight=driver.execute_script('return document.documentElement.scrollHeight')
-    dheight=driver.execute_script('window.scrollTo(0,{})'.format(dheight))
 
-# db에 있는 스토어 리스트를 가져오기
+# get a list from the table
 sql='select link from STLC'
 res=sqlPrs(sql)
 
-# 스토어 리스트의 길이를 가져오기
-sellerLength=len(res)
+
 li1=[]
+# 이 부분은 나중에 손 봐야 합니다. 우리는 웹에서 주소를 입력하는 방식으로 구동할테니!
 for i in range(65,66):
     sellerURL=res[i][0]
-    # 판매자 정보에서 정보를 얻기
+    # get seller's info
     sellerInfo='/profile'
     url=sellerURL+sellerInfo
     driver.get(url)
     time.sleep(2) 
-    # 정보 가져오기
+    # store's name
     stNameSel='#content > div > div._3MuEQCqxSb > div._2i91yA8LnF > div.oSdeQo13Wd > div > div:nth-child(1) > div:nth-child(1) > div._2PXb_kpdRh'
     stName=driver.find_element(by=By.CSS_SELECTOR,value=stNameSel).text
+    # business number check
     busNumberSel='#content > div > div._3MuEQCqxSb > div._2i91yA8LnF > div.oSdeQo13Wd > div > div:nth-child(2) > div:nth-child(1) > div._2PXb_kpdRh'
     busNumber=driver.find_element(by=By.CSS_SELECTOR,value=busNumberSel).text
+    # business address check
     busAddressSel='#content > div > div._3MuEQCqxSb > div._2i91yA8LnF > div.oSdeQo13Wd > div > div:nth-child(2) > div:nth-child(2) > div._2PXb_kpdRh'
     busAddress=driver.find_element(by=By.CSS_SELECTOR,value=busAddressSel).text
+    # from the graph you can discover visitor's gender percentile.
     graph='#content > div > div._3MuEQCqxSb > div._3knY_AjPO7 > div > div'
     src=driver.find_element(by=By.CSS_SELECTOR,value=graph)
     txt=bsp(src.get_attribute('innerHTML'),'html.parser').text
@@ -69,12 +72,13 @@ for i in range(65,66):
     female=txt.split('%')[1]+'%'
     attSel='#header > div > div._1Y0GXNu6q8 > div._3KDc7jvaa-'
     att=driver.find_element(by=By.CSS_SELECTOR,value=attSel).text.split('\n')[0].split('수 ')[1]    
+    # with the help of api, you can verify infos above
     busCheck='http://apis.data.go.kr/1130000/MllBsService/getMllBsInfo?serviceKey=55yUz9MpoHrSz%2B8C53zU9sLbqwDB2Rt9EIvBt9J6qk03ke9IexQYqBb50XkfXsR6H6kkByxLJkx7HJdYczbffA%3D%3D&pageNo=1&numOfRows=10&resultType=xml&bizrno='
     req=requests.get(busCheck+busNumber)
     html=req.text
     src2=bsp(html,'html.parser')
     busok=''
-        
+    # check if the business legit or not
     try:
         isok=src2.select('mngstatenm')[0].text
         if(isok=='정상영업'):
@@ -84,9 +88,9 @@ for i in range(65,66):
             busok=isok
             li1.append([stName,busNumber,busAddress,male,female,att,busok])
     except:
-        busok='사업장번호를 입력하지 않았습니다.'
+        busok='Problem Occured'
         li1.append([stName,busNumber,busAddress,male,female,att,busok])
-
+    # 'myStoreInfo.csv' will be saved in your folder named after 'csvs'
     df1=pd.DataFrame(li1,columns=['상호명','사업자등록번호','사업장 소재지','남성비율','여성비율','관심고객수','정상영업여부'])
     df1.to_csv(f'./csvs/myStoreInfo.csv',encoding='utf-8-sig')
 
@@ -100,7 +104,7 @@ time.sleep(1)
 li2=[]
 jwlist2=[]
 
-for j in range(1,2):
+for j in range(1,4):
     try:
         m=2
         rstar=[]
@@ -130,7 +134,7 @@ for j in range(1,2):
         realjwlist=[]
         #지우기
         m=2
-        while(m!=7):
+        while(m!=11):
             try:
                 driver.find_element(by=By.CSS_SELECTOR,value=listSel.format(m)).click()
                 time.sleep(2)
