@@ -1,3 +1,4 @@
+
   ###############################
  # 2023.04.13. final version  ##
 ###############################
@@ -100,7 +101,7 @@ time.sleep(2)
 clickIt('#CategoryProducts > div._3y-z4lfyMn > div.Ii5tIcy54E > div > div._19Yfb5AYEX > ul > li:nth-child(5) > button')
 time.sleep(2)
 clickIt('#CategoryProducts > div._3y-z4lfyMn > div.Ii5tIcy54E > div > div.IwEWcMcLlb > div._3SdQ5ltYC7 > div > ul > li:nth-child(3) > button')
-time.sleep(1)
+time.sleep(2)
 
 goodInfo=[]
 # let us fetch 3 stuffs from the store
@@ -133,35 +134,35 @@ for j in range(1,4):
         # queue reviews in order by low satisfaction 
         lowRevSel='#REVIEW > div > div._180GG7_7yx > div._2PqWvCMC3e > div._3Tobq9fjVh > ul > li:nth-child(4) > a'
         clickIt(lowRevSel)
-        time.sleep(1)
+        time.sleep(2)
         # get ready for diving into reviews
         sel = '._1XNnRviOK8'
         revs = driver.find_elements(by=By.CSS_SELECTOR,value=sel)
         listSel='#REVIEW > div > div._180GG7_7yx > div.cv6id6JEkg > div > div > a:nth-child({})'
         revinfos=[]
-        # ten list of twenty reviews are enough!
+        # five lists of twenty reviews are enough!
         m=2
-        while(m!=11):
+        while(m!=7):
             try:
                 driver.find_element(by=By.CSS_SELECTOR,value=listSel.format(m)).click()
                 time.sleep(2)
-                # comms: comments, ops: options, stas: satisfaction stars
-                comms = driver.find_elements(by=By.CSS_SELECTOR,value='._3QDEeS6NLn')
-                ops = driver.find_elements(by=By.CSS_SELECTOR,value='._14FigHP3K8')
-                stas = driver.find_elements(by=By.CSS_SELECTOR,value='._15NU42F3kT')
+                # comms: comments, ops: options, stas: satisfaction stars, dats: date, storePick: reviews chosen by seller
+                comms=driver.find_elements(by=By.CSS_SELECTOR,value='div.YEtwtZFLDz > span._3QDEeS6NLn')
+                ops=driver.find_elements(by=By.CSS_SELECTOR,value='._14FigHP3K8')
+                stas=driver.find_elements(by=By.CSS_SELECTOR,value='._15NU42F3kT')
+                dats=driver.find_elements(by=By.CSS_SELECTOR,value='div._2FmJXrTVEX > span._3QDEeS6NLn')
+                try:
+                    storePick=driver.find_element(by=By.CSS_SELECTOR,value='._1WWV8t-fcI').text
+                    if (storePick=='판매자가 직접 선정한 베스트 리뷰입니다.'):
+                        stas=stas[6:]
+                except:
+                    stas=stas[4:]
                 # preprocessing infos into comments, and dates
                 stuffs=[]
                 for c in comms:
-                    stuffs=c.text.split('\n')
-                    for s in stuffs:
-                        if '*' in s:
-                            pass
-                        else:
-                            isok=re.match('^\d{2}.(0[1-9]|1[012]).(0[1-9]|[12][0-9]|3[01]).$',s)
-                            if (isok==None): 
-                                rcomm.append(s)
-                            else:
-                                rdate.append(s)
+                    rcomm.append(c.text)
+                for d in dats:
+                    rdate.append(d.text)
                 for o in ops:
                     roption.append(o.text)
                 for s in stas:
@@ -172,8 +173,56 @@ for j in range(1,4):
             except:
                 m+=1
         df3=pd.DataFrame(revinfos,columns=['기입날짜','별점','옵션', '후기'])
-        df3.to_csv(f'./csvs/myItem{j}.csv',encoding='utf-8-sig')
-        driver.back()
-        time.sleep(2)
+        df3.to_csv(f'./csvs/myUnhappyItem{j}.csv',encoding='utf-8-sig')
     except:
         break
+    # queue reviews in order by high satisfaction 
+    highRevSel='#REVIEW > div > div._180GG7_7yx > div._2PqWvCMC3e > div._3Tobq9fjVh > ul > li:nth-child(3) > a'
+    clickIt(highRevSel)
+    time.sleep(2)
+    # get ready for diving into reviews
+    sel = '._1XNnRviOK8'
+    revs = driver.find_elements(by=By.CSS_SELECTOR,value=sel)
+    listSel='#REVIEW > div > div._180GG7_7yx > div.cv6id6JEkg > div > div > a:nth-child({})'
+    # five lists of twenty reviews are enough!
+
+    rcomm=[]
+    rdate=[]
+    roption=[]
+    rstar=[]
+    revinfos=[]
+    m=2
+    while(m!=7):
+        try:
+            driver.find_element(by=By.CSS_SELECTOR,value=listSel.format(m)).click()
+            time.sleep(2)
+            # comms: comments, ops: options, stas: satisfaction stars, dats: date
+            comms=driver.find_elements(by=By.CSS_SELECTOR,value='div.YEtwtZFLDz > span._3QDEeS6NLn')
+            ops=driver.find_elements(by=By.CSS_SELECTOR,value='._14FigHP3K8')
+            stas=driver.find_elements(by=By.CSS_SELECTOR,value='._15NU42F3kT')
+            dats=driver.find_elements(by=By.CSS_SELECTOR,value='div._2FmJXrTVEX > span._3QDEeS6NLn')
+            try:
+                storePick=driver.find_element(by=By.CSS_SELECTOR,value='._1WWV8t-fcI').text
+                if (storePick=='판매자가 직접 선정한 베스트 리뷰입니다.'):
+                    stas=stas[6:]
+            except:
+                stas=stas[4:]
+            # preprocessing infos into comments, and dates
+            stuffs=[]
+            for c in comms:
+                rcomm.append(c.text)
+            for d in dats:
+                rdate.append(d.text)
+            for o in ops:
+                roption.append(o.text)
+            for s in stas:
+                rstar.append(s.text)               
+            preinfos=list(zip(rdate,rstar,roption,rcomm))
+            revinfos+=preinfos
+            m+=1
+        except:
+            m+=1
+    df3=pd.DataFrame(revinfos,columns=['기입날짜','별점','옵션', '후기'])
+    df3.to_csv(f'./csvs/myHappyItem{j}.csv',encoding='utf-8-sig')
+    driver.back()
+    time.sleep(2)
