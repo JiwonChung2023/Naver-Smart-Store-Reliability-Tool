@@ -125,7 +125,6 @@ for j in range(1,6):
         revs = driver.find_elements(by=By.CSS_SELECTOR,value=sel)
         listSel='#REVIEW > div > div._180GG7_7yx > div.cv6id6JEkg > div > div > a:nth-child({})'
         realjwlist=[]
-        # 다섯 페이지까지만 긁기
         while(m!=7):
             try:
                 driver.find_element(by=By.CSS_SELECTOR,value=listSel.format(m)).click()
@@ -134,7 +133,7 @@ for j in range(1,6):
                 print('.',end='')
                 ####
                 #for l in listSel
-                # 한 페이지 당 20 개의 리뷰가 존재하는데 그거 긁기
+
                 for r in revs:
                     rlist=r.text.split('\n')
                     #print(rlist)
@@ -163,9 +162,8 @@ for j in range(1,6):
                 m+=1
 
         df3=pd.DataFrame(realjwlist,columns=['기입날짜','별점','옵션', '후기'])
-        df3.to_csv(f'./csvs/myItem{j}.csv',encoding='utf-8-sig')
+        df3.to_csv(f'./csvs/myItemData{j}.csv',encoding='utf-8-sig')
         driver.back()
         time.sleep(2)
     except:
         break
-# %%
