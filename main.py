@@ -158,11 +158,11 @@ for j in range(1,4):
                         if '*' in s:
                             pass
                         else:
-                            isok=re.match('[ㄱ-힣 ]',s)
+                            isok=re.match('[\d{2}.\d{2}.\d{2}]',s)
                             if (isok!=None): 
-                                rcomm.append(s)
-                            else:
                                 rdate.append(s)
+                            else:
+                                rcomm.append(s)
                 for o in ops:
                     roption.append(o.text)
                 for s in stas:
