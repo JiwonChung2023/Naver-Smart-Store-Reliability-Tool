@@ -2,23 +2,23 @@
  # 2023.04.13. final version  ##
 ###############################
 # get librarys
+import re
+import time
 import sqlite3
+import requests
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
-import requests
-from bs4 import BeautifulSoup as bsp
 from selenium import webdriver
+import matplotlib.pyplot as plt
+from bs4 import BeautifulSoup as bsp
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-import time
-import re
 
 # get webdriver
 cdriver='./driver/chromedriver.exe'
 driver=webdriver.Chrome(cdriver)
 driver.set_window_position(0,50)
-driver.set_window_size(800, 1300)
+driver.set_window_size(3000,2500)
 
 # define database
 dfile='./db/suspiciousStores0410.db'
@@ -44,7 +44,6 @@ def clickIt(ssel,drv=driver):
 # get a list from the table
 sql='select link from STLC'
 res=sqlPrs(sql)
-
 
 stInfo=[]
 # 이 부분은 나중에 손 봐야 합니다. 우리는 웹에서 주소를 입력하는 방식으로 구동할테니!
@@ -158,11 +157,11 @@ for j in range(1,4):
                         if '*' in s:
                             pass
                         else:
-                            isok=re.match('[\d{2}.\d{2}.\d{2}]',s)
-                            if (isok!=None): 
-                                rdate.append(s)
-                            else:
+                            isok=re.match('^\d{2}.(0[1-9]|1[012]).(0[1-9]|[12][0-9]|3[01]).$',s)
+                            if (isok==None): 
                                 rcomm.append(s)
+                            else:
+                                rdate.append(s)
                 for o in ops:
                     roption.append(o.text)
                 for s in stas:
