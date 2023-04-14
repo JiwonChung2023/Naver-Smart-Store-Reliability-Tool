@@ -49,7 +49,8 @@ res=sqlPrs(sql)
 stInfo=[]
 # 이 부분은 나중에 손 봐야 합니다. 우리는 웹에서 주소를 입력하는 방식으로 구동할테니!
 for i in range(65,66):
-    sellerURL=res[i][0]
+    #sellerURL=res[i][0]
+    sellerURL='https://smartstore.naver.com/soulmateshop' # 후기 많은 스마트스토어를 임시로 넣은 거에요 나중에 지워주세요!
     # get seller's info
     sellerInfo='/profile'
     url=sellerURL+sellerInfo
@@ -140,9 +141,9 @@ for j in range(1,4):
         revs = driver.find_elements(by=By.CSS_SELECTOR,value=sel)
         listSel='#REVIEW > div > div._180GG7_7yx > div.cv6id6JEkg > div > div > a:nth-child({})'
         revinfos=[]
-        # five lists of twenty reviews are enough!
+        # ten lists of twenty reviews are enough!
         m=2
-        while(m!=7):
+        while(m!=12):
             try:
                 rcomm=[]
                 rdate=[]
@@ -193,7 +194,7 @@ for j in range(1,4):
 
     revinfos=[]
     m=2
-    while(m!=7):
+    while(m!=12):
         try:
             rcomm=[]
             rdate=[]

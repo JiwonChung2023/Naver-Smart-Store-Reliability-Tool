@@ -13,7 +13,7 @@ for file in os.listdir(DATA_PATH):
     print(file.ljust(30)+str(round(os.path.getsize(DATA_PATH+ file) / 100000,2))+'MB')
 #%%
 #트레인 파일 불러오기
-train_data = pd.read_csv(DATA_PATH + 'myTrain1.csv',encoding='cp949')
+train_data = pd.read_csv(DATA_PATH + 'myTrain1.csv',encoding='cp949',on_bad_lines='skip')
 train_data.head()
 #%%
 print('학습데이터 전체 개수: {}'.format(len(train_data)))
@@ -36,8 +36,7 @@ train_review = [review for review in train_data['후기'] if type(review) is str
 train_review
 # %%
 #긍정2, 애매 1, 부정 0
-print('긍정 리뷰 갯수: {}'.format(train_data['label'].value_counts()[2]))
-print('애매 리뷰 갯수: {}'.format(train_data['label'].value_counts()[1]))
+print('긍정 리뷰 갯수: {}'.format(train_data['label'].value_counts()[1]))
 print('부정 리뷰 갯수: {}'.format(train_data['label'].value_counts()[0]))
 
 # %%
