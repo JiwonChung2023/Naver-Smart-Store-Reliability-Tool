@@ -35,7 +35,7 @@ def getCBOW(texts=['나는 아침에 바나나 우유와 바나나 파이를 먹
     cols=[t for t,n,in sorted(vec.vocabulary_.items())]
     return (cols,vtr.toarray())
 
-train=pd.read_csv('./csvs/train1.csv')
+train=pd.read_csv('./csvs/realTrain.csv')
 #%%
 train.describe()
 train['sentiment'].value_counts()
