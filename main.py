@@ -144,6 +144,10 @@ for j in range(1,4):
         m=2
         while(m!=7):
             try:
+                rcomm=[]
+                rdate=[]
+                roption=[]
+                rstar=[]
                 driver.find_element(by=By.CSS_SELECTOR,value=listSel.format(m)).click()
                 time.sleep(2)
                 # comms: comments, ops: options, stas: satisfaction stars, dats: date, storePick: reviews chosen by seller
@@ -186,14 +190,15 @@ for j in range(1,4):
     listSel='#REVIEW > div > div._180GG7_7yx > div.cv6id6JEkg > div > div > a:nth-child({})'
     # five lists of twenty reviews are enough!
 
-    rcomm=[]
-    rdate=[]
-    roption=[]
-    rstar=[]
+
     revinfos=[]
     m=2
     while(m!=7):
         try:
+            rcomm=[]
+            rdate=[]
+            roption=[]
+            rstar=[]
             driver.find_element(by=By.CSS_SELECTOR,value=listSel.format(m)).click()
             time.sleep(2)
             # comms: comments, ops: options, stas: satisfaction stars, dats: date
