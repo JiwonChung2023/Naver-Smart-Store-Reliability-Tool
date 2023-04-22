@@ -18,7 +18,7 @@ from sklearn.datasets import load_breast_cancer
 import pycaret
 #%%
 cancer=load_breast_cancer()
-cancer
+cancer.data
 #%%
 df=pd.DataFrame(cancer.data,columns=cancer.feature_names)
 df['target']=cancer.target
