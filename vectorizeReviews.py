@@ -6,7 +6,6 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from kiwipiepy import Kiwi
 import pandas as pd
 kiwi=Kiwi()
-
 #%%
 def getPos(txt='다들 고생했습니다.'):
     res=kiwi.analyze(txt)
@@ -38,7 +37,7 @@ def getCBOW(texts=['나는 아침에 바나나 우유와 바나나 파이를 먹
     cols=[t for t,n,in sorted(vec.vocabulary_.items())]
     return (cols,vtr.toarray())
 
-train=pd.read_csv('./csvs/realTrain.csv')
+train=pd.read_excel('./csvs/realTrain.xlsx')
 #%%
 train.describe()
 train['sentiment'].value_counts()
@@ -140,6 +139,7 @@ et=ExtraTreesClassifier(bootstrap=False, ccp_alpha=0.0, class_weight=None,
 et.fit(df.iloc[:,:-1],df.iloc[:,-1])
 y_pred=et.predict(df2)
 y_pred
+
 #%%
 # 굿 리뷰 중에 불만족이 차지하는 비율!
 tot=len(y_pred)
