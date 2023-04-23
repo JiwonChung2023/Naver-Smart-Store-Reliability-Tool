@@ -48,3 +48,11 @@ merged_df.to_csv('./csvs/myHappyReviews.csv', encoding='utf-8-sig')
 
 
 # # %%
+import pandas as pd
+df1=pd.read_excel('./csvs/realTrain.xlsx')
+df1
+
+# %%
+df1.to_csv('./csvs/crealTrain.csv',encoding='utf-8-sig')
+
+# %%
