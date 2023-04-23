@@ -10,10 +10,10 @@ kiwi=Kiwi()
 def getPos(txt='다들 고생했습니다.'):
     res=kiwi.analyze(txt)
     badwords=['메롱']
-    pos=['NNG','NNP','VV','VX','VA','VC','MDT','MAG','IC','EC','MAC']
+    pos=['NNG','NNP','VV','VX','VA','VC','MDT','MAG','IC','MAC']
     # pos=['NNG','NNP','VV','VX','VA','VC','MDT','MAG','IC'] 84
     # pos=['NNG','NNP','V','MDT','MAG','IC'] 83%
-#    pos=['NNG','NNP','NNB','NR','NP','VV','VA','VX','VCP','VCN','MM','MA','MAJ']
+    #pos=['NNG','NNP','NNB','NR','NP','VV','VA','VX','VCP','VCN','MM','MA','MAJ']
     corpus=[]
     for r in res[0][0]:
         for b in badwords:
@@ -37,7 +37,7 @@ def getCBOW(texts=['나는 아침에 바나나 우유와 바나나 파이를 먹
     cols=[t for t,n,in sorted(vec.vocabulary_.items())]
     return (cols,vtr.toarray())
 
-train=pd.read_excel('./csvs/realTrain.xlsx')
+train=pd.read_csv('./csvs/realTrain.csv')
 #%%
 train.describe()
 train['sentiment'].value_counts()
@@ -144,10 +144,12 @@ y_pred
 # 굿 리뷰 중에 불만족이 차지하는 비율!
 tot=len(y_pred)
 co=0
-for j in y_pred:
+for i,j in enumerate(y_pred):
     if j==0:
         co+=1
-print('불만족 리뷰 비율: ',(co/tot)*100,'%')
+        print(test['후기'].values[i])
+        print('*'*10)
+print('대체적으로 좋은 리뷰 중에 불만족 리뷰 비율: ',(co/tot)*100,'%')
 # %% 만족 리뷰 중에 지나치게 길이가 긴 거는 의심스럽다~
 sco=0
 for i,j in enumerate(y_pred):
@@ -155,7 +157,7 @@ for i,j in enumerate(y_pred):
         print(test['후기'].values[i])
         print('*'*10)
         sco+=1
-print('의심스러운 장문의 리뷰 비율: ',(sco/tot)*100,'%')
+print('의심스러운 장문의 리뷰 개수: ',sco,'개')
 #%%########################################이제 불만족 리뷰 중에서 만족하는 비율을 알아보자!!######
 
 #%%
@@ -222,9 +224,11 @@ y_pred
 # 불만족 리뷰 중에 만족이 차지하는 비율!
 tot=len(y_pred)
 co=0
-for j in y_pred:
+for i,j in enumerate(y_pred):
     if j==1:
         co+=1
+        print(test['후기'].values[i])
+        print('*'*10)
 print('불만족 리뷰 중 만족이 차지하는 비율: ',(co/tot)*100,'%')
 
 # %%

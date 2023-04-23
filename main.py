@@ -51,7 +51,7 @@ stInfo=[]
 # 이 부분은 나중에 손 봐야 합니다. 우리는 웹에서 주소를 입력하는 방식으로 구동할테니!
 for i in range(65,66):
     #sellerURL=res[i][0]
-    sellerURL='https://smartstore.naver.com/hajung_food' # 후기 많은 스마트스토어를 임시로 넣은 거에요 나중에 지워주세요!
+    sellerURL='https://smartstore.naver.com/goldhouse' # 후기 많은 스마트스토어를 임시로 넣은 거에요 나중에 지워주세요!
     # get seller's info
     sellerInfo='/profile'
     url=sellerURL+sellerInfo
