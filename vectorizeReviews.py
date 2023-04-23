@@ -76,15 +76,15 @@ from sklearn.model_selection import train_test_split # 트레이닝셋과 테스
 import pycaret
 #%%
 df=pd.DataFrame(data,columns=cols)
-df['target']=train['sentiment'].values
+# df['target']=train['sentiment'].values
 #%%
 from pycaret.classification import *
 from sklearn.metrics import accuracy_score
 #%%
-test=pd.read_csv('./csvs/realTest.csv')
+test=pd.read_csv('./csvs/myHappyReviews.csv')
 #%%
 test.describe()
-test['sentiment'].value_counts()
+#test['sentiment'].value_counts()
 #%%
 textArrays=test['후기'].values
 print(textArrays)
@@ -103,18 +103,10 @@ vec=CountVectorizer()
 #CB
 cols2,data2=getCBOW(loList,'CBOW')
 v_realTest=pd.DataFrame(data2,columns=cols2)
-v_realTest['target']=test['sentiment']
-v_realTest
 
 # %%
 df2=pd.DataFrame(data2,columns=cols2)
-df2['target']=test['sentiment'].values
 # %%
-df
-# %%
-df2
-#%%
-
 # df와 df2의 column 이름을 가져와서 비교
 columns_df = set(df.columns)
 columns_df2 = set(df2.columns)
@@ -134,6 +126,7 @@ columns_only_in_df2 = columns_df2 - columns_df
 
 # df에만 있는 column을 unknown으로 대체
 df2.drop(columns=columns_only_in_df2, inplace=True)
+df['target']=train['sentiment'].values
 # %%
 from sklearn.ensemble import ExtraTreesClassifier
 et=ExtraTreesClassifier(bootstrap=False, ccp_alpha=0.0, class_weight=None,
@@ -144,22 +137,94 @@ et=ExtraTreesClassifier(bootstrap=False, ccp_alpha=0.0, class_weight=None,
                       n_estimators=100, n_jobs=-1, oob_score=False,
                       random_state=0, verbose=0, warm_start=False)
 #%%
-et.fit(df.iloc[:,:-2],df.iloc[:,-1])
-y_pred=et.predict(df2.iloc[:,:-2])
-acc=accuracy_score(df2.iloc[:,-1],y_pred)
-print('모델 정확도:',acc)
+et.fit(df.iloc[:,:-1],df.iloc[:,-1])
+y_pred=et.predict(df2)
+y_pred
+#%%
+# 굿 리뷰 중에 불만족이 차지하는 비율!
+tot=len(y_pred)
+co=0
+for j in y_pred:
+    if j==0:
+        co+=1
+print('불만족 리뷰 비율: ',(co/tot)*100,'%')
+# %% 만족 리뷰 중에 지나치게 길이가 긴 거는 의심스럽다~
+sco=0
+for i,j in enumerate(y_pred):
+    if (j==1) and (len(test['후기'].values[i].split('\n'))>3):
+        print(test['후기'].values[i])
+        print('*'*10)
+        sco+=1
+print('의심스러운 장문의 리뷰 비율: ',(sco/tot)*100,'%')
+#%%########################################이제 불만족 리뷰 중에서 만족하는 비율을 알아보자!!######
+
+#%%
+test=pd.read_csv('./csvs/myUnhappyReviews.csv')
+#%%
+test.describe()
+#test['sentiment'].value_counts()
+#%%
+textArrays=test['후기'].values
+print(textArrays)
+#%% 정규식으로 텍스트 아닌 거 제거하기
+import re
+loList=[]
+for t in textArrays:
+    letters_only=re.sub('[^ㄱ-힣]',' ',t)
+    loList.append(letters_only)
+#%%
+#TFIDF
+cols2,data2=getCBOW(loList)
+print(pd.DataFrame(data2,columns=cols2))
+vec=CountVectorizer()
 # %%
-mydf=pd.read_csv('./csvs/realTest.csv',encoding='utf-8-sig')
-li1=mydf['후기'].values
-li2=y_pred
-li3=df2.iloc[:,-1].values
+#CB
+cols2,data2=getCBOW(loList,'CBOW')
+v_realTest=pd.DataFrame(data2,columns=cols2)
 
 # %%
-j=0
-for i in range(len(li2)):
-    if li2[i] != li3[i]:
-        print(li1[i],'<<',li2[i],'로 잘못 예견함. >>')
-        print('*'*10)
-        j+=1
-print(j)
+df2=pd.DataFrame(data2,columns=cols2)
+# %%
+# df와 df2의 column 이름을 가져와서 비교
+columns_df = set(df.columns)
+columns_df2 = set(df2.columns)
+
+# df에만 있는 column 찾기
+columns_only_in_df = columns_df - columns_df2
+
+# df에만 있는 column을 unknown으로 대체
+df.drop(columns=columns_only_in_df, inplace=True)
+# %%
+# df와 df2의 column 이름을 가져와서 비교
+columns_df = set(df.columns)
+columns_df2 = set(df2.columns)
+
+# df에만 있는 column 찾기
+columns_only_in_df2 = columns_df2 - columns_df
+
+# df에만 있는 column을 unknown으로 대체
+df2.drop(columns=columns_only_in_df2, inplace=True)
+df['target']=train['sentiment'].values
+# %%
+from sklearn.ensemble import ExtraTreesClassifier
+et=ExtraTreesClassifier(bootstrap=False, ccp_alpha=0.0, class_weight=None,
+                      criterion='gini', max_depth=None, max_features='sqrt',
+                      max_leaf_nodes=None, max_samples=None,
+                      min_impurity_decrease=0.0, min_samples_leaf=1,
+                      min_samples_split=2, min_weight_fraction_leaf=0.0,
+                      n_estimators=100, n_jobs=-1, oob_score=False,
+                      random_state=0, verbose=0, warm_start=False)
+#%%
+et.fit(df.iloc[:,:-1],df.iloc[:,-1])
+y_pred=et.predict(df2)
+y_pred
+#%%
+# 불만족 리뷰 중에 만족이 차지하는 비율!
+tot=len(y_pred)
+co=0
+for j in y_pred:
+    if j==1:
+        co+=1
+print('불만족 리뷰 중 만족이 차지하는 비율: ',(co/tot)*100,'%')
+
 # %%

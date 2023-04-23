@@ -19,7 +19,8 @@ from selenium.webdriver.common.keys import Keys
 cdriver='./driver/chromedriver.exe'
 driver=webdriver.Chrome(cdriver)
 driver.set_window_position(0,50)
-driver.set_window_size(3000,2500)
+#driver.set_window_size(3000,2500)
+driver.maximize_window()
 
 # define database
 dfile='./db/suspiciousStores0410.db'
@@ -50,7 +51,7 @@ stInfo=[]
 # 이 부분은 나중에 손 봐야 합니다. 우리는 웹에서 주소를 입력하는 방식으로 구동할테니!
 for i in range(65,66):
     #sellerURL=res[i][0]
-    sellerURL='https://smartstore.naver.com/soulmateshop' # 후기 많은 스마트스토어를 임시로 넣은 거에요 나중에 지워주세요!
+    sellerURL='https://smartstore.naver.com/whatkey' # 후기 많은 스마트스토어를 임시로 넣은 거에요 나중에 지워주세요!
     # get seller's info
     sellerInfo='/profile'
     url=sellerURL+sellerInfo
@@ -99,9 +100,9 @@ satis='/category/ALL?cp=1'
 driver.get(sellerURL+satis)
 time.sleep(2)
 # click a button and sort goods. And then align them in order by most reviews
-clickIt('#CategoryProducts > div._3y-z4lfyMn > div.Ii5tIcy54E > div > div._19Yfb5AYEX > ul > li:nth-child(5) > button')
+clickIt('#CategoryProducts > div._3y-z4lfyMn > div.wiPgcFH7Gk > div > div._1qTYQamMQo > div._1kAIJfUNTi > div > ul > li:nth-child(3) > button')
 time.sleep(2)
-clickIt('#CategoryProducts > div._3y-z4lfyMn > div.Ii5tIcy54E > div > div.IwEWcMcLlb > div._3SdQ5ltYC7 > div > ul > li:nth-child(3) > button')
+clickIt('#CategoryProducts > div._3y-z4lfyMn > div.wiPgcFH7Gk > div > div._3W9WvSiXP3 > ul > li:nth-child(7) > button')
 time.sleep(2)
 
 goodInfo=[]
