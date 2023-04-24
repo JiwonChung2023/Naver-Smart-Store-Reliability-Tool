@@ -23,6 +23,7 @@ driver.maximize_window()
 
 # define functions
 # with it, you can fetch some infos and also send them easily
+dfile=''
 def sqlPrs(sql='',d=[],opt=1):
     with sqlite3.connect(dfile) as conn:
         cur=conn.cursor()
