@@ -3,6 +3,7 @@
  # 2023.04.13. final version  ##
 ###############################
 # get librarys
+import os
 import re
 import time
 import sqlite3
@@ -401,3 +402,13 @@ if (isok=='정상영업'):
 else:
     grade='D'
 print('해당 업체의 등급은',grade,'입니다.')
+
+os.remove('./csvs/myGoodInfo1.csv')
+os.remove('./csvs/myGoodInfo2.csv')
+os.remove('./csvs/myGoodInfo3.csv')
+os.remove('./csvs/myHappyItem1.csv')
+os.remove('./csvs/myHappyItem2.csv')
+os.remove('./csvs/myHappyItem3.csv')
+os.remove('./csvs/myHappyReviews.csv')
+os.remove('./csvs/myStoreInfo.csv')
+os.remove('./csvs/realTrain.csv')
