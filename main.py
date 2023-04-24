@@ -364,11 +364,39 @@ et=ExtraTreesClassifier(bootstrap=False, ccp_alpha=0.0, class_weight=None,
 et.fit(df.iloc[:,:-1],df.iloc[:,-1])
 y_pred=et.predict(df2)
 
-# 만족 리뷰 중에 지나치게 길이가 긴 거는 의심스럽다~
+# positive한 리뷰 중에 지나치게 길이가 긴 거는 의심스럽다~
+
+# 이제 지표를 가지고 등급을 매긴다~!
 sco=0
 for i,j in enumerate(y_pred):
     if (j==1) and (len(test['후기'].values[i].split('\n'))>3):
         sco+=1
 print('의심스러운 장문의 리뷰 개수: ',sco,'개')
+print('정상 영업 여부: ',isok)
+upper4point8='no'
+for g in goodInfo:
+    if (g[2][-3:]>='4.8'):
+        upper4point8='yes'
+print('리뷰 별점이 한 개라도 4.8을 넘나: ',upper4point8)
 
-# 이제 지표를 가지고 등급을 매긴다~!
+# 등급 산정 프로세스
+grade=''
+if (isok=='정상영업'):
+    if (upper4point8=='yes'):
+        if (sco<10):
+            grade='B'
+        elif (10<sco<30):
+            grade='C'
+        else:
+            grade='D' 
+    else:
+        if (sco<10):
+            grade='A'
+        elif (10<sco<30):
+            grade='B'
+        else:
+            grade='C'  
+
+else:
+    grade='D'
+print('해당 업체의 등급은',grade,'입니다.')
