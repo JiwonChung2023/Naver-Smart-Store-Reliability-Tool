@@ -14,10 +14,9 @@ import matplotlib.pyplot as plt
 from bs4 import BeautifulSoup as bsp
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-
+from webdriver_manager.chrome import ChromeDriverManager
 # get webdriver
-cdriver='./driver/chromedriver.exe'
-driver=webdriver.Chrome(cdriver)
+driver=webdriver.Chrome(ChromeDriverManager().install())
 driver.set_window_position(0,50)
 #driver.set_window_size(3000,2500)
 driver.maximize_window()
@@ -51,7 +50,7 @@ stInfo=[]
 # 이 부분은 나중에 손 봐야 합니다. 우리는 웹에서 주소를 입력하는 방식으로 구동할테니!
 for i in range(65,66):
     #sellerURL=res[i][0]
-    sellerURL='https://smartstore.naver.com/goldhouse' # 후기 많은 스마트스토어를 임시로 넣은 거에요 나중에 지워주세요!
+    sellerURL='https://smartstore.naver.com/top_seafood' # 후기 많은 스마트스토어를 임시로 넣은 거에요 나중에 지워주세요!
     # get seller's info
     sellerInfo='/profile'
     url=sellerURL+sellerInfo
@@ -233,3 +232,152 @@ for j in range(1,4):
     df3.to_csv(f'./csvs/myHappyItem{j}.csv',encoding='utf-8-sig')
     driver.back()
     time.sleep(2)
+###########################csv합치기############################
+import pandas as pd
+
+# 파일명 리스트 생성
+file_names = ['myUnhappyItem1.csv','myUnhappyItem2.csv','myUnhappyItem3.csv']
+
+# 빈 DataFrame 생성
+merged_df = pd.DataFrame()
+
+# 파일 읽어와서 DataFrame에 병합
+for file_name in file_names:
+    df = pd.read_csv('./csvs/'+file_name)
+    merged_df = pd.concat([merged_df, df])
+
+# 결과를 realTrain.csv 파일로 저장
+merged_df.to_csv('./csvs/myUnhappyReviews.csv', encoding='utf-8-sig')
+
+# 파일명 리스트 생성
+file_names = ['myHappyItem1.csv','myHappyItem2.csv','myHappyItem3.csv']
+
+# 빈 DataFrame 생성
+merged_df = pd.DataFrame()
+
+# 파일 읽어와서 DataFrame에 병합
+for file_name in file_names:
+    df = pd.read_csv('./csvs/'+file_name)
+    merged_df = pd.concat([merged_df, df])
+
+# 결과를 realTrain.csv 파일로 저장
+merged_df.to_csv('./csvs/myHappyReviews.csv', encoding='utf-8-sig')
+#####################감성분석#############################
+from sklearn.feature_extraction.text import CountVectorizer
+# TF_IDF(Term Frequency - Inverse Document Frequency)
+# 숫자 기반 문서 벡터 - 단어의 중요성 기반의 벡터
+from sklearn.feature_extraction.text import TfidfVectorizer
+from kiwipiepy import Kiwi
+import pandas as pd
+import re
+from sklearn.ensemble import ExtraTreesClassifier
+from sklearn.metrics import accuracy_score
+import sqlite3
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import re
+import seaborn as sns
+kiwi=Kiwi()
+
+def getPos(txt='다들 고생했습니다.'):
+    res=kiwi.analyze(txt)
+    badwords=['메롱']
+    pos=['NNG','NNP','VV','VX','VA','VC','MDT','MAG','IC','MAC']
+    # pos=['NNG','NNP','VV','VX','VA','VC','MDT','MAG','IC'] 84
+    # pos=['NNG','NNP','V','MDT','MAG','IC'] 83%
+    #pos=['NNG','NNP','NNB','NR','NP','VV','VA','VX','VCP','VCN','MM','MA','MAJ']
+    corpus=[]
+    for r in res[0][0]:
+        for b in badwords:
+            if (list(r)[0].find(b)==-1):
+                for p in pos:
+                    if (list(r)[1].find(p)>-1):
+                        corpus.append(list(r)[0])
+    return corpus
+
+# CBOW: 카운트기반 BOW
+def getCBOW(texts=['나는 아침에 바나나 우유와 바나나 파이를 먹고 왔다.'],opt='CBOW'):
+    corpus=[]
+    for t in texts:
+        tarr=getPos(t)
+        corpus.append(' '.join(tarr))
+    if opt=='CBOW':
+        vec=CountVectorizer()
+    else:
+        vec=TfidfVectorizer()
+    vtr=vec.fit_transform(corpus)
+    cols=[t for t,n,in sorted(vec.vocabulary_.items())]
+    return (cols,vtr.toarray())
+
+train=pd.read_csv('./csvs/realTrain.csv')
+textArrays=train['후기'].values
+#정규식으로 텍스트 아닌 거 제거하기
+
+loList=[]
+for t in textArrays:
+    letters_only=re.sub('[^ㄱ-힣]',' ',t)
+    loList.append(letters_only)
+#TFIDF
+cols,data=getCBOW(loList)
+vec=CountVectorizer()
+
+
+df=pd.DataFrame(data,columns=cols)
+
+
+test=pd.read_csv('./csvs/myHappyReviews.csv')
+test.describe()
+textArrays=test['후기'].values
+# 정규식으로 텍스트 아닌 거 제거하기
+loList=[]
+for t in textArrays:
+    letters_only=re.sub('[^ㄱ-힣]',' ',t)
+    loList.append(letters_only)
+#TFIDF
+cols2,data2=getCBOW(loList)
+vec=CountVectorizer()
+#CB
+cols2,data2=getCBOW(loList,'CBOW')
+v_realTest=pd.DataFrame(data2,columns=cols2)
+
+df2=pd.DataFrame(data2,columns=cols2)
+# df와 df2의 column 이름을 가져와서 비교
+columns_df = set(df.columns)
+columns_df2 = set(df2.columns)
+
+# df에만 있는 column 찾기
+columns_only_in_df = columns_df - columns_df2
+
+# df에만 있는 column을 unknown으로 대체
+df.drop(columns=columns_only_in_df, inplace=True)
+
+# df와 df2의 column 이름을 가져와서 비교
+columns_df = set(df.columns)
+columns_df2 = set(df2.columns)
+
+# df에만 있는 column 찾기
+columns_only_in_df2 = columns_df2 - columns_df
+
+# df에만 있는 column을 unknown으로 대체
+df2.drop(columns=columns_only_in_df2, inplace=True)
+df['target']=train['sentiment'].values
+
+et=ExtraTreesClassifier(bootstrap=False, ccp_alpha=0.0, class_weight=None,
+                    criterion='gini', max_depth=None, max_features='sqrt',
+                    max_leaf_nodes=None, max_samples=None,
+                    min_impurity_decrease=0.0, min_samples_leaf=1,
+                    min_samples_split=2, min_weight_fraction_leaf=0.0,
+                    n_estimators=100, n_jobs=-1, oob_score=False,
+                    random_state=0, verbose=0, warm_start=False)
+et.fit(df.iloc[:,:-1],df.iloc[:,-1])
+y_pred=et.predict(df2)
+
+# 만족 리뷰 중에 지나치게 길이가 긴 거는 의심스럽다~
+sco=0
+for i,j in enumerate(y_pred):
+    if (j==1) and (len(test['후기'].values[i].split('\n'))>3):
+        sco+=1
+print('의심스러운 장문의 리뷰 개수: ',sco,'개')
+
+# 여기서 웹사이트로 sco변수를 쏴야 한다~
