@@ -21,9 +21,6 @@ driver.set_window_position(0,50)
 #driver.set_window_size(3000,2500)
 driver.maximize_window()
 
-# define database
-dfile='./db/suspiciousStores0410.db'
-
 # define functions
 # with it, you can fetch some infos and also send them easily
 def sqlPrs(sql='',d=[],opt=1):
@@ -42,58 +39,51 @@ def sqlPrs(sql='',d=[],opt=1):
 def clickIt(ssel,drv=driver):
     drv.find_element(by=By.CSS_SELECTOR,value=ssel).click()
 
-# get a list from the table
-sql='select link from STLC'
-res=sqlPrs(sql)
-
 stInfo=[]
-# 이 부분은 나중에 손 봐야 합니다. 우리는 웹에서 주소를 입력하는 방식으로 구동할테니!
-for i in range(65,66):
-    #sellerURL=res[i][0]
-    sellerURL='https://smartstore.naver.com/top_seafood' # 후기 많은 스마트스토어를 임시로 넣은 거에요 나중에 지워주세요!
-    # get seller's info
-    sellerInfo='/profile'
-    url=sellerURL+sellerInfo
-    driver.get(url)
-    time.sleep(2) 
-    # store's name
-    stNameSel='#content > div > div._3MuEQCqxSb > div._2i91yA8LnF > div.oSdeQo13Wd > div > div:nth-child(1) > div:nth-child(1) > div._2PXb_kpdRh'
-    stName=driver.find_element(by=By.CSS_SELECTOR,value=stNameSel).text
-    # business number check
-    busNumberSel='#content > div > div._3MuEQCqxSb > div._2i91yA8LnF > div.oSdeQo13Wd > div > div:nth-child(2) > div:nth-child(1) > div._2PXb_kpdRh'
-    busNumber=driver.find_element(by=By.CSS_SELECTOR,value=busNumberSel).text
-    # business address check
-    busAddressSel='#content > div > div._3MuEQCqxSb > div._2i91yA8LnF > div.oSdeQo13Wd > div > div:nth-child(2) > div:nth-child(2) > div._2PXb_kpdRh'
-    busAddress=driver.find_element(by=By.CSS_SELECTOR,value=busAddressSel).text
-    # from the graph you can discover visitor's gender percentile.
-    graph='#content > div > div._3MuEQCqxSb > div._3knY_AjPO7 > div > div'
-    src=driver.find_element(by=By.CSS_SELECTOR,value=graph)
-    txt=bsp(src.get_attribute('innerHTML'),'html.parser').text
-    male=txt.split('%')[0][-2:]+'%'
-    female=txt.split('%')[1]+'%'
-    attSel='#header > div > div._1Y0GXNu6q8 > div._3KDc7jvaa-'
-    att=driver.find_element(by=By.CSS_SELECTOR,value=attSel).text.split('\n')[0].split('수 ')[1]    
-    # with the help of api, you can verify infos above
-    busCheck='http://apis.data.go.kr/1130000/MllBsService/getMllBsInfo?serviceKey=55yUz9MpoHrSz%2B8C53zU9sLbqwDB2Rt9EIvBt9J6qk03ke9IexQYqBb50XkfXsR6H6kkByxLJkx7HJdYczbffA%3D%3D&pageNo=1&numOfRows=10&resultType=xml&bizrno='
-    req=requests.get(busCheck+busNumber)
-    html=req.text
-    src2=bsp(html,'html.parser')
-    busok=''
-    # check if the business legit or not
-    try:
-        isok=src2.select('mngstatenm')[0].text
-        if(isok=='정상영업'):
-            busok='True Business'
-            stInfo.append([stName,busNumber,busAddress,male,female,att,busok])
-        else:
-            busok=isok
-            stInfo.append([stName,busNumber,busAddress,male,female,att,busok])
-    except:
-        busok='Problem Occured'
+sellerURL=input('https://smartstore.naver.com/blahblahstore와 같은 형식으로 스토어 주소를 입력해주세요: ')
+# get seller's info
+sellerInfo='/profile'
+url=sellerURL+sellerInfo
+driver.get(url)
+time.sleep(2) 
+# store's name
+stNameSel='#content > div > div._3MuEQCqxSb > div._2i91yA8LnF > div.oSdeQo13Wd > div > div:nth-child(1) > div:nth-child(1) > div._2PXb_kpdRh'
+stName=driver.find_element(by=By.CSS_SELECTOR,value=stNameSel).text
+# business number check
+busNumberSel='#content > div > div._3MuEQCqxSb > div._2i91yA8LnF > div.oSdeQo13Wd > div > div:nth-child(2) > div:nth-child(1) > div._2PXb_kpdRh'
+busNumber=driver.find_element(by=By.CSS_SELECTOR,value=busNumberSel).text
+# business address check
+busAddressSel='#content > div > div._3MuEQCqxSb > div._2i91yA8LnF > div.oSdeQo13Wd > div > div:nth-child(2) > div:nth-child(2) > div._2PXb_kpdRh'
+busAddress=driver.find_element(by=By.CSS_SELECTOR,value=busAddressSel).text
+# from the graph you can discover visitor's gender percentile.
+graph='#content > div > div._3MuEQCqxSb > div._3knY_AjPO7 > div > div'
+src=driver.find_element(by=By.CSS_SELECTOR,value=graph)
+txt=bsp(src.get_attribute('innerHTML'),'html.parser').text
+male=txt.split('%')[0][-2:]+'%'
+female=txt.split('%')[1]+'%'
+attSel='#header > div > div._1Y0GXNu6q8 > div._3KDc7jvaa-'
+att=driver.find_element(by=By.CSS_SELECTOR,value=attSel).text.split('\n')[0].split('수 ')[1]    
+# with the help of api, you can verify infos above
+busCheck='http://apis.data.go.kr/1130000/MllBsService/getMllBsInfo?serviceKey=55yUz9MpoHrSz%2B8C53zU9sLbqwDB2Rt9EIvBt9J6qk03ke9IexQYqBb50XkfXsR6H6kkByxLJkx7HJdYczbffA%3D%3D&pageNo=1&numOfRows=10&resultType=xml&bizrno='
+req=requests.get(busCheck+busNumber)
+html=req.text
+src2=bsp(html,'html.parser')
+busok=''
+# check if the business legit or not
+try:
+    isok=src2.select('mngstatenm')[0].text
+    if(isok=='정상영업'):
+        busok='True Business'
         stInfo.append([stName,busNumber,busAddress,male,female,att,busok])
-    # 'myStoreInfo.csv' will be saved in your folder named after 'csvs'
-    df1=pd.DataFrame(stInfo,columns=['상호명','사업자등록번호','사업장 소재지','남성비율','여성비율','관심고객수','정상영업여부'])
-    df1.to_csv(f'./csvs/myStoreInfo.csv',encoding='utf-8-sig')
+    else:
+        busok=isok
+        stInfo.append([stName,busNumber,busAddress,male,female,att,busok])
+except:
+    busok='Problem Occured'
+    stInfo.append([stName,busNumber,busAddress,male,female,att,busok])
+# 'myStoreInfo.csv' will be saved in your folder named after 'csvs'
+df1=pd.DataFrame(stInfo,columns=['상호명','사업자등록번호','사업장 소재지','남성비율','여성비율','관심고객수','정상영업여부'])
+df1.to_csv(f'./csvs/myStoreInfo.csv',encoding='utf-8-sig')
 # now let us move to goods category page
 satis='/category/ALL?cp=1'
 driver.get(sellerURL+satis)
@@ -133,52 +123,53 @@ for j in range(1,4):
         df2=pd.DataFrame(goodInfo,columns=['스토어 이름','상품 이름','리뷰 정보'])
         df2.to_csv(f'./csvs/myGoodInfo{j}.csv',encoding='utf-8-sig')
         # queue reviews in order by low satisfaction 
-        lowRevSel='#REVIEW > div > div._180GG7_7yx > div._2PqWvCMC3e > div._3Tobq9fjVh > ul > li:nth-child(4) > a'
-        clickIt(lowRevSel)
-        time.sleep(2)
+        # lowRevSel='#REVIEW > div > div._180GG7_7yx > div._2PqWvCMC3e > div._3Tobq9fjVh > ul > li:nth-child(4) > a'
+        # clickIt(lowRevSel)
+        # time.sleep(2)
         # get ready for diving into reviews
         sel = '._1XNnRviOK8'
         revs = driver.find_elements(by=By.CSS_SELECTOR,value=sel)
         listSel='#REVIEW > div > div._180GG7_7yx > div.cv6id6JEkg > div > div > a:nth-child({})'
         revinfos=[]
         # ten lists of twenty reviews are enough!
-        m=2
-        while(m!=12):
-            try:
-                rcomm=[]
-                rdate=[]
-                roption=[]
-                rstar=[]
-                driver.find_element(by=By.CSS_SELECTOR,value=listSel.format(m)).click()
-                time.sleep(2)
-                # comms: comments, ops: options, stas: satisfaction stars, dats: date, storePick: reviews chosen by seller
-                comms=driver.find_elements(by=By.CSS_SELECTOR,value='div.YEtwtZFLDz > span._3QDEeS6NLn')
-                ops=driver.find_elements(by=By.CSS_SELECTOR,value='._14FigHP3K8')
-                stas=driver.find_elements(by=By.CSS_SELECTOR,value='._15NU42F3kT')
-                dats=driver.find_elements(by=By.CSS_SELECTOR,value='div._2FmJXrTVEX > span._3QDEeS6NLn')
-                try:
-                    storePick=driver.find_element(by=By.CSS_SELECTOR,value='._1WWV8t-fcI').text
-                    if (storePick=='판매자가 직접 선정한 베스트 리뷰입니다.'):
-                        stas=stas[6:]
-                except:
-                    stas=stas[4:]
-                # preprocessing infos into comments, and dates
-                stuffs=[]
-                for c in comms:
-                    rcomm.append(c.text)
-                for d in dats:
-                    rdate.append(d.text)
-                for o in ops:
-                    roption.append(o.text)
-                for s in stas:
-                    rstar.append(s.text)               
-                preinfos=list(zip(rdate,rstar,roption,rcomm))
-                revinfos+=preinfos
-                m+=1
-            except:
-                m+=1
-        df3=pd.DataFrame(revinfos,columns=['기입날짜','별점','옵션', '후기'])
-        df3.to_csv(f'./csvs/myUnhappyItem{j}.csv',encoding='utf-8-sig')
+    # unhappy reviews
+    #     m=2
+    #     while(m!=12):
+    #         try:
+    #             rcomm=[]
+    #             rdate=[]
+    #             roption=[]
+    #             rstar=[]
+    #             driver.find_element(by=By.CSS_SELECTOR,value=listSel.format(m)).click()
+    #             time.sleep(2)
+    #             # comms: comments, ops: options, stas: satisfaction stars, dats: date, storePick: reviews chosen by seller
+    #             comms=driver.find_elements(by=By.CSS_SELECTOR,value='div.YEtwtZFLDz > span._3QDEeS6NLn')
+    #             ops=driver.find_elements(by=By.CSS_SELECTOR,value='._14FigHP3K8')
+    #             stas=driver.find_elements(by=By.CSS_SELECTOR,value='._15NU42F3kT')
+    #             dats=driver.find_elements(by=By.CSS_SELECTOR,value='div._2FmJXrTVEX > span._3QDEeS6NLn')
+    #             try:
+    #                 storePick=driver.find_element(by=By.CSS_SELECTOR,value='._1WWV8t-fcI').text
+    #                 if (storePick=='판매자가 직접 선정한 베스트 리뷰입니다.'):
+    #                     stas=stas[6:]
+    #             except:
+    #                 stas=stas[4:]
+    #             # preprocessing infos into comments, and dates
+    #             stuffs=[]
+    #             for c in comms:
+    #                 rcomm.append(c.text)
+    #             for d in dats:
+    #                 rdate.append(d.text)
+    #             for o in ops:
+    #                 roption.append(o.text)
+    #             for s in stas:
+    #                 rstar.append(s.text)               
+    #             preinfos=list(zip(rdate,rstar,roption,rcomm))
+    #             revinfos+=preinfos
+    #             m+=1
+    #         except:
+    #             m+=1
+    #     df3=pd.DataFrame(revinfos,columns=['기입날짜','별점','옵션', '후기'])
+    #     df3.to_csv(f'./csvs/myUnhappyItem{j}.csv',encoding='utf-8-sig')
     except:
         break
     # queue reviews in order by high satisfaction 
@@ -189,9 +180,9 @@ for j in range(1,4):
     sel = '._1XNnRviOK8'
     revs = driver.find_elements(by=By.CSS_SELECTOR,value=sel)
     listSel='#REVIEW > div > div._180GG7_7yx > div.cv6id6JEkg > div > div > a:nth-child({})'
-    # five lists of twenty reviews are enough!
-
-
+    
+    #ten lists of twenty reviews are enough!
+    #get happy reviews from products
     revinfos=[]
     m=2
     while(m!=12):
@@ -235,19 +226,19 @@ for j in range(1,4):
 ###########################csv합치기############################
 import pandas as pd
 
-# 파일명 리스트 생성
-file_names = ['myUnhappyItem1.csv','myUnhappyItem2.csv','myUnhappyItem3.csv']
+# # 파일명 리스트 생성
+# file_names = ['myUnhappyItem1.csv','myUnhappyItem2.csv','myUnhappyItem3.csv']
 
-# 빈 DataFrame 생성
-merged_df = pd.DataFrame()
+# # 빈 DataFrame 생성
+# merged_df = pd.DataFrame()
 
-# 파일 읽어와서 DataFrame에 병합
-for file_name in file_names:
-    df = pd.read_csv('./csvs/'+file_name)
-    merged_df = pd.concat([merged_df, df])
+# # 파일 읽어와서 DataFrame에 병합
+# for file_name in file_names:
+#     df = pd.read_csv('./csvs/'+file_name)
+#     merged_df = pd.concat([merged_df, df])
 
-# 결과를 realTrain.csv 파일로 저장
-merged_df.to_csv('./csvs/myUnhappyReviews.csv', encoding='utf-8-sig')
+# # 결과를 realTrain.csv 파일로 저장
+# merged_df.to_csv('./csvs/myUnhappyReviews.csv', encoding='utf-8-sig')
 
 # 파일명 리스트 생성
 file_names = ['myHappyItem1.csv','myHappyItem2.csv','myHappyItem3.csv']
@@ -380,4 +371,4 @@ for i,j in enumerate(y_pred):
         sco+=1
 print('의심스러운 장문의 리뷰 개수: ',sco,'개')
 
-# 여기서 웹사이트로 sco변수를 쏴야 한다~
+# 이제 지표를 가지고 등급을 매긴다~!
