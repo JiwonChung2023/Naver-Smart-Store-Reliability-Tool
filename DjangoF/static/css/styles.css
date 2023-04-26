@@ -667,6 +667,10 @@ progress {
   }
 }
 .row {
+<<<<<<< HEAD
+  color: black;
+=======
+>>>>>>> 74da7df84f4910ad177c46656938bc1ce1afeb51
   --bs-gutter-x: 1.5rem;
   --bs-gutter-y: 0;
   display: flex;
