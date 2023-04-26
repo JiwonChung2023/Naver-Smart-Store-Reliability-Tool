@@ -18,10 +18,16 @@ def nssrt(sellerURL=''):
     from selenium.webdriver.common.keys import Keys
     from webdriver_manager.chrome import ChromeDriverManager
     # get webdriver
-    driver=webdriver.Chrome(ChromeDriverManager().install())
-    driver.set_window_position(0,50)
+    options = webdriver.ChromeOptions()
+    options.add_argument('--disable-gpu')
+    options.add_argument("--disable-dev-shm-usage")
+    options.add_argument('--headless')
+
+    driver=webdriver.Chrome(ChromeDriverManager().install(), chrome_options=options)
+
     #driver.set_window_size(3000,2500)
     driver.maximize_window()
+    
 
     # define functions
     # with it, you can fetch some infos and also send them easily
@@ -411,5 +417,6 @@ def nssrt(sellerURL=''):
     os.remove('./csvs/myHappyItem3.csv')
     os.remove('./csvs/myHappyReviews.csv')
     os.remove('./csvs/myStoreInfo.csv')
+    driver.quit()
 
-    return grade,stName
+    return stName,grade
