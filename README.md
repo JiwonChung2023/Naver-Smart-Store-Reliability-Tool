@@ -32,4 +32,4 @@ Step3: 특성 중 상대적으로 중요한 것에 가중치를 두고 모델을
 
 
 ### 참고 PPT 자료
-[프로젝트 전개 과정 설명 PPT](./NSSRT.pptx)
+[프로젝트 전개 과정 설명 PPT](./PPT_NSSRT_FINAL.pptx)
