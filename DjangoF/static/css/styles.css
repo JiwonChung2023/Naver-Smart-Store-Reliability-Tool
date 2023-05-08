@@ -1,4 +1,9 @@
 @charset "UTF-8";
+
+
+@import url('https://fonts.googleapis.com/css2?family=Calistoga&family=Noto+Sans+KR:wght@500;700&display=swap');
+
+
 /*!
 * Start Bootstrap - Landing Page v6.0.6 (https://startbootstrap.com/theme/landing-page)
 * Copyright 2013-2023 Start Bootstrap
@@ -79,6 +84,94 @@
   --bs-highlight-bg: #fff3cd;
 }
 
+
+
+
+#pop_icon {
+  padding-top: 80px;
+  position: fixed;
+  top: 30rem;
+  right: 100px;
+}
+#pop_icon span {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 24px;
+  height: 24px;
+  margin-left: -12px;
+  border-left: 1px solid #fff;
+  border-bottom: 1px solid #fff;
+  -webkit-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+  -webkit-animation: sdb 2s infinite;
+  animation: sdb 2s infinite;
+  opacity: 0;
+  box-sizing: border-box;
+}
+#pop_icon span:nth-of-type(1) {
+  -webkit-animation-delay: 0s;
+  animation-delay: 0s;
+}
+#pop_icon span:nth-of-type(2) {
+  top: 16px;
+  -webkit-animation-delay: .15s;
+  animation-delay: .15s;
+}
+#pop_icon span:nth-of-type(3) {
+  top: 32px;
+  -webkit-animation-delay: .3s;
+  animation-delay: .3s;
+}
+@-webkit-keyframes sdb {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes sdb {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+
+.myfont{
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 10px;
+}
+
+
+  body > .backli{
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 10px;
+    
+  }
+
+  .text {
+    animation: shake 1s ease-in-out infinite alternate;
+  }
+  
+  @keyframes shake {
+    from {
+      transform: translateX(-10px);
+    }
+    to {
+      transform: translateX(10px);
+    }
+  }
+
 *,
 *::before,
 *::after {
@@ -99,7 +192,7 @@ body {
   line-height: var(--bs-body-line-height);
   color: var(--bs-body-color);
   text-align: var(--bs-body-text-align);
-  background-color: var(--bs-body-bg);
+  background-color: lightgray;
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
@@ -114,7 +207,6 @@ hr {
 
 h6, .h6, h5, .h5, h4, .h4, h3, .h3, h2, .h2, h1, .h1 {
   margin-top: 0;
-  margin-bottom: 0.5rem;
   font-weight: 700;
   line-height: 1.2;
 }
@@ -152,6 +244,7 @@ h4, .h4 {
 @media (min-width: 1200px) {
   h4, .h4 {
     font-size: 1.5rem;
+    font-size:light;
   }
 }
 
@@ -487,7 +580,7 @@ progress {
 }
 
 .lead {
-  font-size: 1.25rem;
+  font-size: 1.2rem;
   font-weight: 300;
 }
 
@@ -556,6 +649,21 @@ progress {
     font-size: 2.5rem;
   }
 }
+/*#################### 브라우저 연동 ############작동이 안됨###*/
+@media screen and (max-width: 600px) {
+  .col-xl-6 {
+    width: 50%;
+  }
+}
+
+@media screen and (min-width: 600px) {
+  .col-xl-6 {
+    width: 450px;
+  }
+}
+
+/*##################################################*/
+
 
 .list-unstyled {
   padding-left: 0;
@@ -663,9 +771,33 @@ progress {
 }
 @media (min-width: 1400px) {
   .container-xxl, .container-xl, .container-lg, .container-md, .container-sm, .container {
-    max-width: 1320px;
+    max-width: 1300px;
+    
   }
 }
+
+
+  /* 애니메이션을 정의합니다. */
+@keyframes upward {
+  from {
+    transform: translate3d(0, 100%, 0);
+    visibility: visible;
+  }
+
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* 애니메이션을 사용할 div에 애니메이션을 적용합니다. */
+.upward-animation {
+  /* visibility: hidden;*/
+  animation: 1s ease-out 0s 1 upward;
+}
+
+
+
+
 .row {
   --bs-gutter-x: 1.5rem;
   --bs-gutter-y: 0;
@@ -1281,6 +1413,17 @@ progress {
   .col-lg-4 {
     flex: 0 0 auto;
     width: 33.33333333%;
+ 
+  }
+
+.hov{opacity: 0;
+  transition: opacity 3000s ease;
+  }
+.container:hover .hov {
+  opacity: 1;
+  transform: translateY(-0px);
+  transition-timing-function: ease;
+  transition-duration: 0s;
   }
   .col-lg-5 {
     flex: 0 0 auto;
@@ -7667,9 +7810,9 @@ textarea.form-control-lg {
   margin-bottom: 1.5rem !important;
 }
 
-.mb-5 {
+/* .mb-5 {
   margin-bottom: 3rem !important;
-}
+} */
 
 .mb-auto {
   margin-bottom: auto !important;
@@ -8158,6 +8301,11 @@ textarea.form-control-lg {
 .bg-light {
   --bs-bg-opacity: 1;
   background-color: rgba(var(--bs-light-rgb), var(--bs-bg-opacity)) !important;
+}
+
+.bg-light2 {
+  --bs-bg-opacity: 1;
+  background-color: rgba(245, 245, 245, var(--bs-bg-opacity)) !important;
 }
 
 .bg-dark {
@@ -9579,9 +9727,9 @@ textarea.form-control-lg {
   .me-lg-auto {
     margin-right: auto !important;
   }
-  .mb-lg-0 {
+  /* .mb-lg-0 {
     margin-bottom: 0 !important;
-  }
+  } */
   .mb-lg-1 {
     margin-bottom: 0.25rem !important;
   }
@@ -10897,7 +11045,7 @@ header.masthead h1, header.masthead .h1 {
   padding-bottom: 10rem;
 }
 
-/* ===================================================================
+/* ===================================================================fullmargin-bottom: 0.5rem;
  * # FOOTER
  *
  *
@@ -10916,12 +11064,12 @@ header.masthead h1, header.masthead .h1 {
 .s-footer__bottom {
   max-width : 800px;
   font-size : 1.5rem;
-  color     : black;
+  color     : lightgray;
   text-align: center;
 }
 
 .s-footer__bottom-content {
-  display        : flex;
+  
   flex-flow      : row wrap;
   justify-content: center;
   align-items    : center;
@@ -10940,10 +11088,11 @@ header.masthead h1, header.masthead .h1 {
 
 .s-footer .contact-email {
   font-weight   : 50;
-  font-size     : clamp(1.5rem, 3vw, 5rem);
+  font-size     : 40px;
   letter-spacing: -0.05em;
   line-height   : 1;
-  margin-bottom : var(--vspace-0_625);
+ 
+  text-align: center;
 }
 
 .s-footer .contact-email a {

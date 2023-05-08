@@ -7,16 +7,130 @@
     </div>
 </nav>
 {% endblock %}
-{% block content %}
-    ======= rusult =======
 
 
-    <section class="row">
-        <li style="color:orange;">
-        {{ page.result }}
-        </li>
-    </section>
-
-
+{% block pira %}
+<div style="display:inline-block; padding-left: 1%;">
+    <img id="main_img" style="width:450px; height:500;" src="/assets/img/sample.png">
+</div>  
 {% endblock %}
+
+
+{% block content %}
+   
+        <div style="display:inline-block">
+            <section id="backgrade">
+                <p>Grade {{ page.grade }}</p>  
+            </section>    
+
+            <section id="back_main" class="row">
+
+                <p style="color:black;">      
+                {{ page.result }}
+                </p>
+
+                <P>
+                    {{ page.aresult1 }}  
+                </p>
+                <P>
+                    {{ page.aresult2 }}  
+                </p>
+                <P>
+                    {{ page.aresult3 }}  
+                </p>
+
+            </section>
+        </div>
+   
+
+<script>
+
+    var result = "{{ page.grade|escape }}";
+        // result
+      
+    if (result === "A") {
+        document.getElementById("main_display").style.display = "inline-block";
+        document.getElementById("main_img").setAttribute("src", "/assets/img/001.png");
+        document.getElementById("main_display").style.width = "450px";
+        document.getElementById("col_text").style.width = "450px";
+        
+        document.getElementById("backgrade").style.color = "gold";
+        document.getElementById("backgrade").style.fontSize = "5rem";
+        document.getElementById("backgrade").style.fontFamily = 'Calistoga', 'cursive';
+        document.getElementById("back_main").style.fontFamily = 'Noto Sans KR', 'sans-serif';
+        document.getElementById("back_main").style.fontSize = "1.0rem";
+    } else if (result === "B") {
+        document.getElementById("main_display").style.display = "inline-block";
+        document.getElementById("main_img").setAttribute("src", "/assets/img/002.png");
+        document.getElementById("main_display").style.width = "450px";
+        document.getElementById("col_text").style.width = "450px";
+        document.getElementById("backgrade").style.color = "white";
+        document.getElementById("backgrade").style.fontSize = "5rem";
+        document.getElementById("backgrade").style.fontFamily = 'Calistoga', 'cursive';
+        document.getElementById("back_main").style.fontFamily = 'Noto Sans KR', 'sans-serif';
+        document.getElementById("back_main").style.fontSize = "1.0rem";
+    } else if (result === "C") {
+        document.getElementById("main_display").style.display = "inline-block";
+        document.getElementById("main_img").setAttribute("src", "/assets/img/003.png");
+        document.getElementById("main_display").style.width = "450px";
+        document.getElementById("col_text").style.width = "450px";
+        document.getElementById("backgrade").style.color = "brown";
+        document.getElementById("backgrade").style.fontSize = "5rem";
+        document.getElementById("backgrade").style.fontFamily = 'Calistoga', 'cursive';
+        document.getElementById("back_main").style.fontFamily = 'Noto Sans KR', 'sans-serif';
+        document.getElementById("back_main").style.fontSize = "1.0rem";
+    } else if (result === "D") {
+        document.getElementById("main_display").style.display = "inline-block";
+        document.getElementById("main_img").setAttribute("src", "/assets/img/004.png");
+        document.getElementById("main_display").style.width = "450px";
+        document.getElementById("col_text").style.width = "450px";
+        document.getElementById("backgrade").style.color = "red";
+        document.getElementById("backgrade").style.fontSize = "5rem";
+        document.getElementById("backgrade").style.fontFamily = 'Calistoga', 'cursive';
+        document.getElementById("back_main").style.fontFamily = 'Noto Sans KR', 'sans-serif';
+        document.getElementById("back_main").style.fontSize = "1.0rem";
+    }
+  </script>
+
+{% endblock %}    
+
+<!--###################################-->
+  
+
+{% block exback %}
+<section class="features-icons bg-light text-center">
+    <div class="container myfont">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
+                    <div class="features-icons-icon d-flex"><i class="bi-search m-auto text-primary"></i></div>
+                    <h3>Criteria</h3>
+                    <h4 class="lead mb-0">조작을 의심할 만한 스토어의 특징을 수많은 브레인스토밍을 거쳐 신중히 선정하였습니다.
+                    </h4>
+                    
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
+                    <div class="features-icons-icon d-flex"><i class="bi bi-cpu m-auto text-primary"></i></div>
+                    <h3>How</h3>
+                    <h4 class="lead mb-0">공공데이터포털의 API를 활용하고 판매 상품의 별점 통계와 리뷰의 조작 가능성을 점검했습니다. 
+                    </h4>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="features-icons-item mx-auto mb-0 mb-lg-3">
+                    <div class="features-icons-icon d-flex"><i class="bi bi-bar-chart m-auto text-primary"></i></div>
+                    <h3>Review NLP</h3>
+                    <h4 class="lead mb-0">리뷰 NLP는 형태소 분석을 거친 후 머신러닝 중 앙상블 기법을 사용해 Sentiment Analysis를 시행했습니다.</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+
+
+
 

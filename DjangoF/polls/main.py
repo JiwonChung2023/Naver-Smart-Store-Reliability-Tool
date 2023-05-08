@@ -404,7 +404,6 @@ def nssrt(sellerURL=''):
                 grade='B'
             else:
                 grade='C'  
-
     else:
         grade='D'
     print('해당 업체의 등급은',grade,'입니다.')
@@ -419,4 +418,4 @@ def nssrt(sellerURL=''):
     os.remove('./csvs/myStoreInfo.csv')
     driver.quit()
 
-    return stName,grade
+    return stName,grade,sco,isok,upper4point8

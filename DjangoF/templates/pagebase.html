@@ -14,6 +14,13 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" type="text/css" />
         <!-- Google fonts-->
         <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css" />
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-PlVj1bphe5kxboINdAV+mV8nbCgxJhMCG+XdEZ5L1QjoxYZ/8ilZLr9nA8BJQqWfzIIgMPlcDlx5kmxQwI4hHw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+       
+          
+        <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>  
+
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="/assets/css/styles.css" rel="stylesheet" />
         <style>
@@ -43,10 +50,17 @@
         {% block nav %}
         {% endblock%}
         <!-- Masthead-->
-        <header class="masthead" style="background-image: url('assets/img/bg-masthead.jpg')">
-            <div class="container position-relative">
+
+        {% block popup %} 
+        {% endblock%}
+
+        <header id="main_head" class="masthead" style="background-image: url('/assets/img/bg-masthead.jpg')">
+         <div>
+            {% block pira %}
+            {% endblock%} 
+            <div id="main_display" class="container position-relative">
                 <div class="row justify-content-center">
-                    <div class="col-xl-6">
+                    <div id="col_text" class="col-xl-6">
                         <div class="text-center text-white">
                             <!-- Page heading-->
                             {% block contenttext %}
@@ -65,35 +79,18 @@
                     </div>
                 </div>
             </div>
+        </div>
         </header>
         <!-- Icons Grid-->
-        <section class="features-icons bg-light text-center">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-4">
-                        <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
-                            <div class="features-icons-icon d-flex"><i class="bi-window m-auto text-primary"></i></div>
-                            <h3>Fully Responsive</h3>
-                            <p class="lead mb-0">This theme will look great on any device, no matter the size!</p>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
-                            <div class="features-icons-icon d-flex"><i class="bi-layers m-auto text-primary"></i></div>
-                            <h3>Bootstrap 5 Ready</h3>
-                            <p class="lead mb-0">Featuring the latest build of the new Bootstrap 5 framework!</p>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="features-icons-item mx-auto mb-0 mb-lg-3">
-                            <div class="features-icons-icon d-flex"><i class="bi-terminal m-auto text-primary"></i></div>
-                            <h3>Easy to Use</h3>
-                            <p class="lead mb-0">Ready to use with your own content, or customize the source files!</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+
+        {% block exback %} <!-- back표현-->
+        {% endblock%}
+
+        {% block exfront %} <!-- front표현-->
+        {% endblock%}
+
+       
+
         <!-- Image Showcases-->
         {% block bottom %}
         {% endblock %}

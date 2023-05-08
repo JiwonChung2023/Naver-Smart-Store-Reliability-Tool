@@ -9,6 +9,17 @@
 </nav>
 {% endblock %}
 
+{% block popup %}
+<div id="pop_icon">
+    <span></span>
+    <span></span>
+    <span></span>
+    <p style="color:white;">SCROLL</p>
+    
+</div> 
+{% endblock %}
+
+
 {% block contenttext %}
     <h1 class="mb-5 test_obj" >Trust Issues with Naver Smart Store? 
     <br>Solve them with our Reliability Verification!</h1>
@@ -16,16 +27,21 @@
 
 {% block content %}
 
-<form action='/polls/create/' method='POST'>
+<form action='/polls/create/' method='POST' onsubmit="showLoading()">
     {% csrf_token %}
 
     <div class="row">
         <div class="col">
-            <input class="form-control form-control-lg test_obj2" id="qtxt" name="qtxt" type="text" placeholder="ENTER THE LINK" />
+            <input class="form-control form-control-lg test_obj2" id="qtxt" name="qtxt" type="text" placeholder="ENTER THE LINK" value="https://smartstore.naver.com/"/>
             <div class="invalid-feedback text-white" data-sb-feedback="qtxt:required">Naver Smart Store Link is required.</div>
             <div class="invalid-feedback text-white" data-sb-feedback="qtxt:email">Naver Smart Store Link is not valid.</div>
         </div>
-        <div class="col-auto"><button type="submit" class="btn btn-primary btn-lg test_obj2">Submit</button></div>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary btn-lg test_obj2">CHECK</button>
+        </div>
+        <div class = "loadingText">
+            <p class="text mt-3" style="font-size:20px"></p>
+        </div>
 
     </div>
 
@@ -43,56 +59,84 @@
 {% endblock %}
 
 
-{% block bottom %}
-<section class="showcase">
-    <div class="container-fluid p-0">
-        <div class="row g-0">
-            <div class="col-lg-6 order-lg-2 text-white showcase-img" style="background-image: url('assets/img/bg-showcase-1.jpg')"></div>
-            <div class="col-lg-6 order-lg-1 my-auto showcase-text">
-                <h2>Fully Responsive Design</h2>
-                <p class="lead mb-0">When you use a theme created by Start Bootstrap, you know that the theme will look great on any device, whether it's a phone, tablet, or desktop the page will behave responsively!</p>
+{% block exfront %}
+<section class="features-icons bg-light text-center">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
+                    <div class="features-icons-icon d-flex"><i class="bi-window m-auto text-primary"></i></div>
+                    <h3>Naver Smart Store</h3>
+                    <h4 class="lead mb-0">Trust Issues with <br>Naver Smart Store Purchases? 
+                      </h4>
+                      
+                </div>
             </div>
-        </div>
-        <div class="row g-0">
-            <div class="col-lg-6 text-white showcase-img" style="background-image: url('assets/img/bg-showcase-2.jpg')"></div>
-            <div class="col-lg-6 my-auto showcase-text">
-                <h2>Updated For Bootstrap 5</h2>
-                <p class="lead mb-0">Newly improved, and full of great utility classes, Bootstrap 5 is leading the way in mobile responsive web development! All of the themes on Start Bootstrap are now using Bootstrap 5!</p>
+            <div class="col-lg-4">
+                <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
+                    <div class="features-icons-icon d-flex"><i class="bi-layers m-auto text-primary"></i></div>
+                    <h3>Artificial Intelligence</h3>
+                    <h4 class="lead mb-0">Analysis through AI Machine Learning Predictive Algorithms</h4>
+                </div>
             </div>
-        </div>
-        <div class="row g-0">
-            <div class="col-lg-6 order-lg-2 text-white showcase-img" style="background-image: url('assets/img/bg-showcase-3.jpg')"></div>
-            <div class="col-lg-6 order-lg-1 my-auto showcase-text">
-                <h2>Easy to Use & Customize</h2>
-                <p class="lead mb-0">Landing Page is just HTML and CSS with a splash of SCSS for users who demand some deeper customization options. Out of the box, just add your content and images, and your new landing page will be ready to go!</p>
+            <div class="col-lg-4">
+                <div class="features-icons-item mx-auto mb-0 mb-lg-3">
+                    <div class="features-icons-icon d-flex"><i class="bi-terminal m-auto text-primary"></i></div>
+                    <h3>Result</h3>
+                    <h4 class="lead mb-0">We can inform the Reliability <br>of Naver Smart Store <br>through its Grade Ratings!</h4>
+                </div>
             </div>
         </div>
     </div>
 </section>
+{% endblock %}
+
+{% block bottom %}
+
 <!-- Testimonials-->
-<section class="testimonials text-center bg-light">
+<section class="testimonials text-center bg-light2">
     <div class="container">
-        <h2 class="mb-5">What people are saying...</h2>
-        <div class="row">
-            <div class="col-lg-4">
+        <h2 class="mb-5">NSSRT CREWS</h2><h4 style = "font-style:light">Naver Smart Store Reliability Tool</h4>
+        <div class="row upward-animation people">
+            <div class="col-lg-4 hov">
                 <div class="testimonial-item mx-auto mb-5 mb-lg-0">
-                    <img class="img-fluid rounded-circle mb-3" src="/assets/img/testimonials-1.jpg" alt="..." />
-                    <h5>Margaret E.</h5>
-                    <p class="font-weight-light mb-0">"This is fantastic! Thanks so much guys!"</p>
+                    <img class="img-fluid rounded-circle mb-3" src="/assets/img/owl_jw.jpg" alt="..." />
+                    <h5>Jiwon Chung</h5>
+                    
                 </div>
             </div>
-            <div class="col-lg-4">
+            <div class="col-lg-4 hov">
                 <div class="testimonial-item mx-auto mb-5 mb-lg-0">
-                    <img class="img-fluid rounded-circle mb-3" src="/assets/img/testimonials-2.jpg" alt="..." />
-                    <h5>Fred S.</h5>
-                    <p class="font-weight-light mb-0">"Bootstrap is amazing. I've been using it to create lots of super nice landing pages."</p>
+                    <img class="img-fluid rounded-circle mb-3" src="/assets/img/sj3.png" alt="..." />
+                    <h5>Su Jin Kim</h5>
+                    
                 </div>
             </div>
-            <div class="col-lg-4">
+            <div class="col-lg-4 hov">
                 <div class="testimonial-item mx-auto mb-5 mb-lg-0">
-                    <img class="img-fluid rounded-circle mb-3" src="/assets/img/testimonials-3.jpg" alt="..." />
-                    <h5>Sarah W.</h5>
-                    <p class="font-weight-light mb-0">"Thanks so much for making these free resources available to us!"</p>
+                    <img class="img-fluid rounded-circle mb-3" src="/assets/img/rabbit_jh.png" alt="..." />
+                    <h5>Joon Hyun An</h5>
+                    
+                </div>
+            </div>
+            <div class="col-lg-4 hov">
+                <div class="testimonial-item mx-auto mb-5 mb-lg-0">
+                    <img class="img-fluid rounded-circle mb-3" src="/assets/img/fox_dw.png" alt="..." />
+                    <h5>David Jang</h5>
+                    
+                </div>
+            </div>
+            <div class="col-lg-4 hov">
+                <div class="testimonial-item mx-auto mb-5 mb-lg-0">
+                    <img class="img-fluid rounded-circle mb-3" src="/assets/img/ai3.png" alt="..." />
+                    <h5>Artificial Intelligence</h5> 
+                </div>
+            </div>
+            <div class="col-lg-4 hov">
+                <div class="testimonial-item mx-auto mb-5 mb-lg-0">
+                    <img class="img-fluid rounded-circle mb-3" src="/assets/img/raccoon_eb.png" alt="..." />
+                    <h5>Eunbi  Jo</h5>
+                    
                 </div>
             </div>
         </div>
@@ -112,15 +156,12 @@
                             <br>
         
                             <p class="contact-email">
-                                <a href="https://github.com/JiwonChung2023/Naver-Smart-Store-Reliability-Tool">https://github.com/JiwonChung2023/Naver-Smart-Store-Reliability-Tool</a>   
+                                <a href="https://github.com/JiwonChung2023/Naver-Smart-Store-Reliability-Tool"><img src = "./assets/img/git.png"></a>   
                             </p>
         
                             <ul class="contact-info">                        
                                 <li class="info-address">
-                                    Orchard St, New York, NY 10002  
-                                </li>
-                                <li class="info-phone">
-                                    <a href="tel:+917-442-1876">917-442-1876</a>  
+                                    © Copyright NSSRT 2023
                                 </li>
                             </ul>
         
@@ -129,10 +170,17 @@
         
                     <div class="row s-footer__bottom">
                         <div class="column lg-12 s-footer__bottom-content">
-            
-                            <p class="ss-copyright">
-                                <span>© Copyright NSSRT 2023</span> 
-                                <span>Design by JH JW SJ</span>
+                            <!--designed by-->
+                            <p class="ss-copyright" style="display:block">
+                                <h4>Designed By 
+                                    <br>Jiwon Chung&emsp;Su Jin Kim
+                                    
+                                    <br>
+                                     Joon Hyun An&ensp; 
+                                     David Jang&ensp;  
+                                     Eunbi  Jo&ensp;
+                                    
+                                </h4>
                             </p>
         
                             <ul class="s-footer__social">
@@ -184,6 +232,28 @@
 <!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
 <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+<script>
+    window.addEventListener('scroll', function() {
+        const div = document.querySelector('.people');
+        const rect = div.getBoundingClientRect();
+        const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+        if (rect.top <= windowHeight) {
+          div.classList.add('upward-animation');
+        }
+      });
+    </script>
+
+    <script>
+        function showLoading() {
+            var btn = document.querySelector(".btn");
+            var text = document.querySelector(".text");
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>&nbsp;LOADING...';
+            text.innerHTML = 'This analysis may take a couple of minutes.';
+            text.classList.add('text');
+        }
+    </script>
+    
 </body>
 </html>
 

@@ -1,0 +1,23 @@
+{% extends 'pagebase.html' %}
+{% block nav %}
+<!-- Navigation-->
+<nav class="navbar navbar-light bg-light static-top">
+    <div class="container">
+            <a href='#'><img src = "/assets/img/NSSRT.png" style="height:40px"></a>
+    </div>
+</nav>
+{% endblock %}
+{% block content %}
+   
+    <section class="row">
+        <li style="color:orange;">
+        {{ page.result }}
+        {{ page.aresult }}
+        </li>
+    </section>
+
+
+{% endblock %}
+
+
+
