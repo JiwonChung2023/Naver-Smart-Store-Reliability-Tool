@@ -4,10 +4,10 @@ Project Idea
 As of 2023, Naver Smart Store is one of the most popular shopping sites among Koreans due to its convenience and the trustworthiness of the Naver platform. However, recent news reports have surfaced about scams involving Smart Store. These scams include various tactics such as luring buyers with relatively low prices and then shutting down the shopping page after purchase.
 How can we prevent consumer harm in this context? Our project, the 'Naver Smart Store Reliability Tool (NSSRT)', addresses this issue. NSSRT helps protect consumers by calculating and displaying the reliability of Smart Store merchants.
 
-###Data Collection
+### Data Collection
 Collection Period: 2023-04-05 to 2023-04-15
 
-###Collection Method:
+### Collection Method:
 
 Step 1: Gather a list of suspected fraudulent merchants from review manipulation communities.
 Step 2: Visit the Smart Store websites of these merchants and analyze the common characteristics of suspected fraudulent merchants.
