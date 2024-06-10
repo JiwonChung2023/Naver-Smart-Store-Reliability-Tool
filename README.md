@@ -23,7 +23,7 @@ Merchants lacking a business registration number in their information may be sus
 Merchants whose business registration number cannot be verified with the Fair Trade Commission may be suspected of fraud.
 Merchants whose business registration number was registered very recently with the Fair Trade Commission may be suspected of fraud.
 Merchants offering prices significantly lower than other competitors may be suspected of fraud.
-Reference PPT
+### Reference PPT
 [프로젝트 전개 과정 설명 PPT](./NSSRT.pptx)
 
 # Naver-Smart-Store-Reliability-Tool(NSSRT)
