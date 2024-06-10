@@ -1,3 +1,31 @@
+## Naver-Smart-Store-Reliability-Tool (NSSRT)
+### Is Naver Smart Store Truly Safe? What Makes Consumers Trust It?
+Project Idea
+As of 2023, Naver Smart Store is one of the most popular shopping sites among Koreans due to its convenience and the trustworthiness of the Naver platform. However, recent news reports have surfaced about scams involving Smart Store. These scams include various tactics such as luring buyers with relatively low prices and then shutting down the shopping page after purchase.
+How can we prevent consumer harm in this context? Our project, the 'Naver Smart Store Reliability Tool (NSSRT)', addresses this issue. NSSRT helps protect consumers by calculating and displaying the reliability of Smart Store merchants.
+
+###Data Collection
+Collection Period: 2023-04-05 to 2023-04-15
+
+###Collection Method:
+
+Step 1: Gather a list of suspected fraudulent merchants from review manipulation communities.
+Step 2: Visit the Smart Store websites of these merchants and analyze the common characteristics of suspected fraudulent merchants.
+Step 3: Create a model by assigning weights to relatively important characteristics.
+Expected Results from Data Analysis
+Merchants whose product categories are inconsistent and not specialized may be suspected of fraud.
+Merchants with a low response rate on the chat service (TokTok) may be suspected of fraud.
+Merchants with a low response rate to Q&A inquiries may be suspected of fraud.
+Merchants with addresses in apartments or regular houses instead of offices or business locations may be suspected of fraud.
+Merchants with significantly few or no reviews may be suspected of fraud.
+Merchants with a low number of interested customers or store favorites compared to the number of reviews may be suspected of fraud.
+Merchants lacking a business registration number in their information may be suspected of fraud.
+Merchants whose business registration number cannot be verified with the Fair Trade Commission may be suspected of fraud.
+Merchants whose business registration number was registered very recently with the Fair Trade Commission may be suspected of fraud.
+Merchants offering prices significantly lower than other competitors may be suspected of fraud.
+Reference PPT
+[프로젝트 전개 과정 설명 PPT](./NSSRT.pptx)
+
 # Naver-Smart-Store-Reliability-Tool(NSSRT)
 
 ## 네이버 스마트 스토어는 과연 안전할까? 거기서 소비자가 믿고 구매하는 이유가 뭘까?
